@@ -1,7 +1,7 @@
 . ~/.zsh/aliases
 
 # changing directory to code project
-function c { cd ~/code/$1; }
+function r { cd ~/repo/$1; }
 
 # alternative to "rails" command to use templates
 function railsapp {
@@ -10,6 +10,15 @@ function railsapp {
   shift 2
   rails $appname -m http://github.com/ryanb/rails-templates/raw/master/$template.rb $@
 }
+
+#ls and grep based aliases with colour support
+alias ls='ls --color=auto'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 # misc
 alias reload='. ~/.bash_profile'
