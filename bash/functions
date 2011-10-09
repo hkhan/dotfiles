@@ -1,0 +1,39 @@
+function cv () {
+           cdargs "$1" && cd "'cat "$HOME/.cdargsresult"'" ;
+}
+
+#-----------------------------#
+# FUNCTIONS		      
+#-----------------------------#
+
+# case insensitive recursive grep for text in current directory in all non-binary files
+function grepAllRecursive() {
+	grep -riI $1 .
+}
+
+# show the top 10 disk space hogs in the specified directory
+function ducks() {
+	du -cks * | sort -rn | cut -f2 | xargs du -sh 2>/dev/null | head -11
+}
+
+# displays a multi-line prompt, useful for long dir structures
+function multiLinePrompt() {
+	if [ $(basename ${0#-}) == "bash" ] ; then
+		export PS1='\[\e]0;\h \u \w\a\]\[\e[0;34m\]\u@\h \[\e[33m\]\w\[\e[0;32m\]\n\$ '
+	else
+		HOST=`hostname`
+		ESC=`echo "\033"`
+		BEL=`echo "\007"`
+		RAW=`echo "\r"`
+		export PS1='-${RAW}${ESC}]0;${HOST} ${USER}${BEL}-${ESC}[0;34m${USER}${ESC}[0m@${ESC}[0;34m${HOST%%.*}${ESC}[0;33m${ESC}[0m $ '
+	fi
+}
+
+# displays a compact prompt, useful for long dir structures, only shows current dir
+function compactPrompt() {
+	#PS1="\[\033]0;\u@\h: \w\007\]\u@\h:\W\\$ "
+	PS1="\[\033]0;\u@\h: \w\007\]\u@\h:\[\e[33m\]\W\\[\e[0m\]\$ "
+}
+
+#export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007";'
+#export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}:
