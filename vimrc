@@ -1,5 +1,8 @@
 " based on http://github.com/jferris/config_files/blob/master/vimrc
 
+" load pathogen for dynamic plugin loading
+call pathogen#infect()
+
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
@@ -63,6 +66,12 @@ if has("autocmd")
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
 
+  " ruby related autocompletion
+  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+
   augroup END
 
 else
@@ -94,21 +103,21 @@ let mapleader = ","
 map <Leader>R :e doc/README_FOR_APP<CR>
 
 " Leader shortcuts for Rails commands
-map <Leader>m :Rmodel 
-map <Leader>c :Rcontroller 
-map <Leader>v :Rview 
-map <Leader>u :Runittest 
-map <Leader>f :Rfunctionaltest 
-map <Leader>tm :RTmodel 
-map <Leader>tc :RTcontroller 
-map <Leader>tv :RTview 
-map <Leader>tu :RTunittest 
-map <Leader>tf :RTfunctionaltest 
-map <Leader>sm :RSmodel 
-map <Leader>sc :RScontroller 
-map <Leader>sv :RSview 
-map <Leader>su :RSunittest 
-map <Leader>sf :RSfunctionaltest 
+map <Leader>m :Rmodel
+map <Leader>c :Rcontroller
+map <Leader>v :Rview
+map <Leader>u :Runittest
+map <Leader>f :Rfunctionaltest
+map <Leader>tm :RTmodel
+map <Leader>tc :RTcontroller
+map <Leader>tv :RTview
+map <Leader>tu :RTunittest
+map <Leader>tf :RTfunctionaltest
+map <Leader>sm :RSmodel
+map <Leader>sc :RScontroller
+map <Leader>sv :RSview
+map <Leader>su :RSunittest
+map <Leader>sf :RSfunctionaltest
 
 " Hide search highlighting
 map <Leader>h :set invhls <CR>
@@ -146,6 +155,8 @@ imap <C-F> <C-R>=expand("%")<CR>
 imap <Tab> <C-N>
 
 imap <C-L> <Space>=><Space>
+
+imap <S-CR>    <CR><CR>end<Esc>-cc
 
 " Display extra whitespace
 " set list listchars=tab:»·,trail:·
@@ -204,4 +215,24 @@ function! OpenURL()
   endif
 endfunction
 map <Leader>w :call OpenURL()<CR>
+
+set cursorline
+
+" save file (ctrl-s)
+map <C-s> :w<cr>
+" copy se" save file (ctrl-s)
+vmap <C-c> y
+" Paste clipboard contents (ctrl-v)
+imap <C-v> <esc>P
+" cut selected text (ctrl-x)
+vmap <C-x> x
+
+map <C-right> <ESC>:tabnext<CR>
+map <C-left> <E:set cursorline
+
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "<c-p>"]
+
+
 
