@@ -228,11 +228,12 @@ imap <C-v> <esc>P
 vmap <C-x> x
 
 map <C-right> <ESC>:tabnext<CR>
-map <C-left> <E:set cursorline
+map <C-left> <ESC>:tabprevious<CR>
 
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "<c-p>"]
 
-
+" guarantees that the NERDTrees for all tabs will be one and the same
+map <F2> :NERDTreeTabsToggle
 
