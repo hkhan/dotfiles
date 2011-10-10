@@ -230,9 +230,36 @@ vmap <C-x> x
 map <C-right> <ESC>:tabnext<CR>
 map <C-left> <ESC>:tabprevious<CR>
 
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
-let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "<c-p>"]
+"let g:SuperTabDefaultCompletionType = "context"
+"let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+"let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "<c-p>"]
+
+"imap =SuperTabAlternateCompletion("<lt>c-p>")
+
+let g:acp_enableAtStartup = 0
+
+let g:stop_autocomplete=0
+
+function! CleverTab(type)
+    if a:type=='omni'
+        if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+            let g:stop_autocomplete=1
+            return "\<TAB>"
+        elseif !pumvisible() && !&omnifunc
+            return "\<C-X>\<C-O>\<C-P>"
+        endif
+    elseif a:type=='keyword' && !pumvisible() && !g:stop_autocomplete
+        return "\<C-X>\<C-N>\<C-P>"
+    elseif a:type=='next'
+        if g:stop_autocomplete
+            let g:stop_autocomplete=0
+        endif
+    endif
+    return ''
+endfunction
+
+inoremap <silent><TAB> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
+
 
 " guarantees that the NERDTrees for all tabs will be one and the same
 map <F2> :NERDTreeMirrorToggle<CR>
