@@ -235,5 +235,5 @@ let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "<c-p>"]
 
 " guarantees that the NERDTrees for all tabs will be one and the same
-map <F2> :NERDTreeTabsToggle<CR>
+map <F2> :NERDTreeMirrorToggle<CR>
 
