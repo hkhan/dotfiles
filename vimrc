@@ -258,7 +258,7 @@ function! CleverTab(type)
     return ''
 endfunction
 
-inoremap <silent><TAB> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
+inoremap <silent><C-Space> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
 
 
 " guarantees that the NERDTrees for all tabs will be one and the same
