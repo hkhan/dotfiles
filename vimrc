@@ -189,13 +189,13 @@ let g:snippetsEmu_key = "<S-Tab>"
 
 " Tab completion options
 " (only complete to the longest unambiguous match, and show a menu)
-set completeopt=longest,menu
+set completeopt=longest,menu,preview
 set wildmode=list:longest,list:full
 set complete=.,t
 
 " case only matters with mixed case expressions
-set ignorecase
-set smartcase
+" set ignorecase
+" set smartcase
 
 " Tags
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
@@ -230,13 +230,8 @@ vmap <C-x> x
 map <C-right> <ESC>:tabnext<CR>
 map <C-left> <ESC>:tabprevious<CR>
 
-"let g:SuperTabDefaultCompletionType = "context"
-"let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
-"let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>", "<c-p>"]
-
-"imap =SuperTabAlternateCompletion("<lt>c-p>")
-
-let g:acp_enableAtStartup = 0
+" disable auto complete popup at the start
+let g:acp_enableAtStartup=0
 
 let g:stop_autocomplete=0
 
@@ -259,7 +254,6 @@ function! CleverTab(type)
 endfunction
 
 inoremap <silent><C-Space> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
-
 
 " guarantees that the NERDTrees for all tabs will be one and the same
 map <F2> :NERDTreeMirrorToggle<CR>
