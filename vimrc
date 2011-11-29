@@ -12,6 +12,7 @@ set backspace=indent,eol,start
 
 set nobackup
 set nowritebackup
+set noswapfile
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
@@ -258,5 +259,3 @@ inoremap <silent><C-Space> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')
 " guarantees that the NERDTrees for all tabs will be one and the same
 map <F2> :NERDTreeMirrorToggle<CR>
 
-set backupdir=~/tmp/vim//
-set directory=~/tmp/vim//
