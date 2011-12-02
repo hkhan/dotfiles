@@ -3,7 +3,7 @@ function cv () {
 }
 
 #-----------------------------#
-# FUNCTIONS		      
+# FUNCTIONS
 #-----------------------------#
 
 # case insensitive recursive grep for text in current directory in all non-binary files
@@ -38,7 +38,7 @@ function compactPrompt() {
 function parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
- 
+
 function git_prompt {
   local         RED="\[\033[0;31m\]"
   local   LIGHT_RED="\[\033[1;31m\]"
@@ -55,12 +55,13 @@ function git_prompt {
     TITLEBAR=""
     ;;
   esac
- 
+
 PS1="${TITLEBAR}\
 $LIGHT_PURPLE\w$YELLOW\$(parse_git_branch)\
-\n$LIGHT_GRAY\$ "
+\n\[\e[0m\]\$ "
 PS2='> '
 PS4='+ '
 }
+
 #export PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/~}\007";'
 #export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}:
