@@ -11,6 +11,9 @@ function railsapp {
   rails $appname -m http://github.com/ryanb/rails-templates/raw/master/$template.rb $@
 }
 
+#alias vi to vim
+alias vi='vim'
+
 #ls and grep based aliases with colour support
 alias ls='ls --color=auto'
 alias ll='ls -alF'
