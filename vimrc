@@ -94,6 +94,8 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+set nohlsearch
+
 " Always display the status line
 set laststatus=2
 
