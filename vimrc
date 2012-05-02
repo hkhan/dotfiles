@@ -1,29 +1,70 @@
 " based on http://github.com/jferris/config_files/blob/master/vimrc
 
-" load pathogen for dynamic plugin loading
-call pathogen#infect()
-
-" Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage itself
+Bundle 'gmarik/vundle'
+
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'ack.vim'
+Bundle 'mudge/runspec.vim'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'bdd/vim-scala'
+Bundle 'JavaScript-Indent'
+Bundle 'godlygeek/tabular'
+Bundle 'kien/ctrlp.vim'
+Bundle 'kogent/vim-puppet'
+Bundle 'matchit.zip'
+Bundle 'nginx.vim'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-commentary'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-surround'
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
+" use the system clipboard
+if has("clipboard")
+  set clipboard=unnamed
+endif
+
+" disable code folding
+set nofoldenable
+
+" set encoding so unicode listchars can be used
+set encoding=utf-8
+
+" set the colour scheme
+set t_Co=256
+
+" Display extra whitespace
+set list listchars=tab:»·,trail:·
+
+" backups and swapfiles
 set nobackup
 set nowritebackup
 set noswapfile
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
+set history=50
+
+" ui
+set ruler
+set showcmd
+set incsearch
+set nowrap
+
+" Always display the status line
+set laststatus=2
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
-
-" This is an alternative that also works in block mode, but the deleted
-" text is lost and it only works for putting the current register.
-"vnoremap p "_dp
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -32,15 +73,16 @@ if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
   set hlsearch
 endif
 
-" Switch wrap off for everything
-set nowrap
+" move line commands
+nnoremap <A-j> :m+<CR>==
+nnoremap <A-k> :m-2<CR>==
+inoremap <A-j> <Esc>:m+<CR>==gi
+inoremap <A-k> <Esc>:m-2<CR>==gi
+vnoremap <A-j> :m'>+<CR>gv=gv
+vnoremap <A-k> :m-2<CR>gv=gv
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
   filetype plugin indent on
 
   " Set File type to 'text' for files ending in .txt
@@ -53,12 +95,7 @@ if has("autocmd")
   augroup vimrcEx
   au!
 
-  " For all text files set 'textwidth' to 78 characters.
-  " autocmd FileType text setlocal textwidth=78
-
   " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
   autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
@@ -74,20 +111,9 @@ if has("autocmd")
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
   augroup END
-
 else
-
   set autoindent		" always set autoindenting on
-
 endif " has("autocmd")
-
-" if has("folding")
-  " set foldenable
-  " set foldmethod=syntax
-  " set foldlevel=1
-  " set foldnestmax=2
-  " set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
-" endif
 
 " Softtabs, 2 spaces
 set tabstop=2
@@ -96,8 +122,6 @@ set expandtab
 
 set nohlsearch
 
-" Always display the status line
-set laststatus=2
 
 " \ is the leader character
 let mapleader = ","
@@ -135,7 +159,7 @@ map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " Inserts the path of the currently edited file into a command
 " Command mode: Ctrl+P
-cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+" cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
 " Duplicate a selection
 " Visual mode: D
@@ -154,15 +178,13 @@ nmap <F1> <Esc>
 " Press ^F from insert mode to insert the current file name
 imap <C-F> <C-R>=expand("%")<CR>
 
-" Maps autocomplete to tab
-imap <Tab> <C-N>
+" " Maps autocomplete to tab
+" imap <Tab> <C-N>
 
 imap <C-L> <Space>=><Space>
 
 imap <S-CR>    <CR><CR>end<Esc>-cc
 
-" Display extra whitespace
-" set list listchars=tab:»·,trail:·
 
 " Edit routes
 command! Rroutes :e config/routes.rb
@@ -238,26 +260,23 @@ let g:acp_enableAtStartup=0
 
 let g:stop_autocomplete=0
 
-function! CleverTab(type)
-    if a:type=='omni'
-        if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-            let g:stop_autocomplete=1
-            return "\<TAB>"
-        elseif !pumvisible() && !&omnifunc
-            return "\<C-X>\<C-O>\<C-P>"
-        endif
-    elseif a:type=='keyword' && !pumvisible() && !g:stop_autocomplete
-        return "\<C-X>\<C-N>\<C-P>"
-    elseif a:type=='next'
-        if g:stop_autocomplete
-            let g:stop_autocomplete=0
-        endif
-    endif
-    return ''
-endfunction
+" function! CleverTab(type)
+"     if a:type=='omni'
+"         if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+"             let g:stop_autocomplete=1
+"             return "\<TAB>"
+"         elseif !pumvisible() && !&omnifunc
+"             return "\<C-X>\<C-O>\<C-P>"
+"         endif
+"     elseif a:type=='keyword' && !pumvisible() && !g:stop_autocomplete
+"         return "\<C-X>\<C-N>\<C-P>"
+"     elseif a:type=='next'
+"         if g:stop_autocomplete
+"             let g:stop_autocomplete=0
+"         endif
+"     endif
+"     return ''
+" endfunction
 
-inoremap <silent><C-Space> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
-
-" guarantees that the NERDTrees for all tabs will be one and the same
-map <F2> :NERDTreeMirrorToggle<CR>
+" inoremap <silent><C-Space> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
 
