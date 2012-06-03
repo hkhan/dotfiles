@@ -24,6 +24,8 @@ $if Bash
   Space: magic-space
 $endif
 
+set echo-control-characters off
+
 # Include system wide settings which are ignored
 # by default if one has their own .inputrc
 $include /etc/inputrc

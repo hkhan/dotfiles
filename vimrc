@@ -59,6 +59,7 @@ set ruler
 set showcmd
 set incsearch
 set nowrap
+set splitbelow
 
 " Always display the status line
 set laststatus=2
@@ -229,7 +230,7 @@ set tags=./tags;
 let g:fuf_splitPathMatching=1
 
 " Open URL
-command -bar -nargs=1 OpenURL :!open <args>
+command! -bar -nargs=1 OpenURL :!open <args>
 function! OpenURL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:]*')
   echo s:uri
@@ -280,3 +281,16 @@ let g:stop_autocomplete=0
 
 " inoremap <silent><C-Space> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
 
+function! InsertTabWrapper()
+  let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+      return "\<tab>"
+    else
+      return "\<c-p>"
+    endif
+endfunction
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+inoremap <s-tab> <c-n>
+
+inoremap <expr> <A-j> ((pumvisible())?("\<Down>"):("<A-j>"))
+inoremap <expr> <A-k> ((pumvisible())?("\<Up>"):("<A-k>"))
