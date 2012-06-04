@@ -40,13 +40,14 @@ function parse_git_branch {
 }
 
 function git_prompt {
-  local         RED="\[\033[0;31m\]"
-  local   LIGHT_RED="\[\033[1;31m\]"
-  local      YELLOW="\[\033[0;33m\]"
-  local LIGHT_GREEN="\[\033[1;32m\]"
-  local       WHITE="\[\033[1;37m\]"
-  local  LIGHT_GRAY="\[\033[0;37m\]"
-  local LIGHT_PURPLE="\[\033[1;34m\]"
+  local          RED="\[\033[0;31m\]"
+  local    LIGHT_RED="\[\033[1;31m\]"
+  local       YELLOW="\[\033[0;33m\]"
+  local  LIGHT_GREEN="\[\033[1;32m\]"
+  local        WHITE="\[\033[1;37m\]"
+  local   LIGHT_GRAY="\[\033[0;37m\]"
+  local LIGHT_PURPLE="\[\033[1;35m\]"
+  local   LIGHT_BLUE="\[\033[1;34m\]"
   case $TERM in
     xterm*)
     TITLEBAR='\[\033]0;\u@\h:\w\007\]'

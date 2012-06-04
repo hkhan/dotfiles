@@ -45,6 +45,13 @@ set encoding=utf-8
 " set the colour scheme
 set t_Co=256
 
+syntax enable
+set background=dark
+" let g:solarized_termcolors=256
+
+" let g:solarized_termtrans=1
+colorscheme solarized
+
 " Display extra whitespace
 set list listchars=tab:»·,trail:·
 
@@ -60,6 +67,11 @@ set showcmd
 set incsearch
 set nowrap
 set splitbelow
+set hlsearch
+
+" case only matters with mixed case expressions
+set ignorecase
+set smartcase
 
 " Always display the status line
 set laststatus=2
@@ -75,12 +87,12 @@ if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
 endif
 
 " move line commands
-nnoremap <A-j> :m+<CR>==
-nnoremap <A-k> :m-2<CR>==
-inoremap <A-j> <Esc>:m+<CR>==gi
-inoremap <A-k> <Esc>:m-2<CR>==gi
-vnoremap <A-j> :m'>+<CR>gv=gv
-vnoremap <A-k> :m-2<CR>gv=gv
+nnoremap <C-j> :m+<CR>==
+nnoremap <C-k> :m-2<CR>==
+inoremap <C-j> <Esc>:m+<CR>==gi
+inoremap <C-k> <Esc>:m-2<CR>==gi
+vnoremap <C-j> :m'>+<CR>gv=gv
+vnoremap <C-k> :m-2<CR>gv=gv
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -121,11 +133,23 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
-set nohlsearch
-
-
-" \ is the leader character
+" , is the leader character
 let mapleader = ","
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" MISC KEY MAPS
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>y "*y
+" Move around splits with <c-hjkl>
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+" Clear the search buffer when hitting return
+function! MapCR()
+  nnoremap <cr> :nohlsearch<cr>
+endfunction
+call MapCR()
 
 " Edit the README_FOR_APP (makes :R commands work)
 map <Leader>R :e doc/README_FOR_APP<CR>
@@ -219,10 +243,6 @@ set completeopt=longest,menu,preview
 set wildmode=list:longest,list:full
 set complete=.,t
 
-" case only matters with mixed case expressions
-" set ignorecase
-" set smartcase
-
 " Tags
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 set tags=./tags;
@@ -244,9 +264,9 @@ map <Leader>w :call OpenURL()<CR>
 
 set cursorline
 
-" save file (ctrl-s)
-map <C-s> :w<cr>
-" copy se" save file (ctrl-s)
+" save file
+map <Leader>s :w<cr>
+" copy "
 vmap <C-c> y
 " Paste clipboard contents (ctrl-v)
 imap <C-v> <esc>P
@@ -292,5 +312,22 @@ endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <s-tab> <c-n>
 
-inoremap <expr> <A-j> ((pumvisible())?("\<Down>"):("<A-j>"))
-inoremap <expr> <A-k> ((pumvisible())?("\<Up>"):("<A-k>"))
+inoremap <expr> <C-j> ((pumvisible())?("\<Down>"):("<C-j>"))
+inoremap <expr> <C-k> ((pumvisible())?("\<Up>"):("<C-k>"))
+
+let g:ctrlp_clear_cache_on_exit = 1
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ARROW KEYS ARE UNACCEPTABLE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <Left> <Nop>
+map <Right> <Nop>
+map <Up> <Nop>
+map <Down> <Nop>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" OPEN FILES IN DIRECTORY OF CURRENT FILE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+map <leader>e :edit %%
+map <leader>v :view %%
