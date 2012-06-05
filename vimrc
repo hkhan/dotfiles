@@ -27,6 +27,7 @@ Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
+Bundle 'vim-scripts/ZoomWin'
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -46,10 +47,10 @@ set encoding=utf-8
 set t_Co=256
 
 syntax enable
-set background=dark
 " let g:solarized_termcolors=256
-
 " let g:solarized_termtrans=1
+
+set background=dark
 colorscheme solarized
 
 " Display extra whitespace
@@ -67,8 +68,11 @@ set showcmd
 set incsearch
 set nowrap
 set splitbelow
+set splitright
 set hlsearch
-
+" set window widths for fully maximizing windows
+set wmw=0
+set wmh=0
 " case only matters with mixed case expressions
 set ignorecase
 set smartcase
@@ -116,6 +120,7 @@ if has("autocmd")
 
   " Automatically load .vimrc source when saved
   autocmd BufWritePost .vimrc source $MYVIMRC
+  autocmd bufwritepost .vimrc call Pl#Load()
 
   " ruby related autocompletion
   autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
@@ -145,6 +150,7 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
+nnoremap <silent> <leader>m :ZoomWin<CR>
 " Clear the search buffer when hitting return
 function! MapCR()
   nnoremap <cr> :nohlsearch<cr>
@@ -155,21 +161,21 @@ call MapCR()
 map <Leader>R :e doc/README_FOR_APP<CR>
 
 " Leader shortcuts for Rails commands
-map <Leader>m :Rmodel
-map <Leader>c :Rcontroller
-map <Leader>v :Rview
-map <Leader>u :Runittest
-map <Leader>f :Rfunctionaltest
-map <Leader>tm :RTmodel
-map <Leader>tc :RTcontroller
-map <Leader>tv :RTview
-map <Leader>tu :RTunittest
-map <Leader>tf :RTfunctionaltest
-map <Leader>sm :RSmodel
-map <Leader>sc :RScontroller
-map <Leader>sv :RSview
-map <Leader>su :RSunittest
-map <Leader>sf :RSfunctionaltest
+" map <Leader>m :Rmodel
+" map <Leader>c :Rcontroller
+" map <Leader>v :Rview
+" map <Leader>u :Runittest
+" map <Leader>f :Rfunctionaltest
+" map <Leader>tm :RTmodel
+" map <Leader>tc :RTcontroller
+" map <Leader>tv :RTview
+" map <Leader>tu :RTunittest
+" map <Leader>tf :RTfunctionaltest
+" map <Leader>sm :RSmodel
+" map <Leader>sc :RScontroller
+" map <Leader>sv :RSview
+" map <Leader>su :RSunittest
+" map <Leader>sf :RSfunctionaltest
 
 " Hide search highlighting
 map <Leader>h :set invhls <CR>
@@ -266,6 +272,7 @@ set cursorline
 
 " save file
 map <Leader>s :w<cr>
+map <Leader>q :q<cr>
 " copy "
 vmap <C-c> y
 " Paste clipboard contents (ctrl-v)
