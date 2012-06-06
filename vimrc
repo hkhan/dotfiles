@@ -283,6 +283,12 @@ vmap <C-x> x
 map <C-right> <ESC>:tabnext<CR>
 map <C-left> <ESC>:tabprevious<CR>
 
+" strip trailing whitespace
+function! StripWhitespace()
+  exec ':%s/ \+$//gc'
+endfunction
+map <leader>sw :call StripWhitespace()<CR>
+
 " disable auto complete popup at the start
 let g:acp_enableAtStartup=0
 
