@@ -284,10 +284,11 @@ map <C-right> <ESC>:tabnext<CR>
 map <C-left> <ESC>:tabprevious<CR>
 
 " strip trailing whitespace
-function! StripWhitespace()
-  exec ':%s/ \+$//gc'
-endfunction
-map <leader>sw :call StripWhitespace()<CR>
+" function! StripWhitespace()
+"   exec ':%s/ \+$//gc'
+" endfunction
+" map <leader>sw :call StripWhitespace()<CR>
+nnoremap <leader>S :%s/\s\+$//<cr>:let @/=''<CR>
 
 " disable auto complete popup at the start
 let g:acp_enableAtStartup=0
