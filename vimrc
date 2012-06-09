@@ -70,15 +70,24 @@ set nowrap
 set splitbelow
 set splitright
 set hlsearch
+
 " set window widths for fully maximizing windows
 set wmw=0
 set wmh=0
+
 " case only matters with mixed case expressions
 set ignorecase
 set smartcase
 
 " Always display the status line
 set laststatus=2
+
+"Ever notice a slight lag after typing the leader key + command? This lowers
+"the timeout.
+set timeoutlen=500
+
+"Switch between buffers without saving
+set hidden
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
@@ -145,6 +154,7 @@ let mapleader = ","
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <leader>y "*y
+
 " Move around splits with <c-hjkl>
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -177,8 +187,18 @@ map <Leader>R :e doc/README_FOR_APP<CR>
 " map <Leader>su :RSunittest
 " map <Leader>sf :RSfunctionaltest
 
+map <space> :
+imap jj <esc>
+
+map <Leader>c \\\
+
+" replace the word under the cursor
+:nnoremap <Leader>rw :%s/\<<C-r><C-w>\>//g<Left><Left>
+
 " Hide search highlighting
 map <Leader>h :set invhls <CR>
+
+nmap <leader>ev :tabedit $MYVIMRC<CR>
 
 " Opens an edit command with the path of the currently edited file filled in
 " Normal mode: <Leader>e
@@ -288,7 +308,7 @@ map <C-left> <ESC>:tabprevious<CR>
 "   exec ':%s/ \+$//gc'
 " endfunction
 " map <leader>sw :call StripWhitespace()<CR>
-nnoremap <leader>S :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader>sw :%s/\s\+$//<cr>:let @/=''<CR>
 
 " disable auto complete popup at the start
 let g:acp_enableAtStartup=0
