@@ -70,6 +70,14 @@ set nowrap
 set splitbelow
 set splitright
 set hlsearch
+set number
+set numberwidth=5
+set cursorline
+
+" Color scheme
+" colorscheme vividchalk
+" highlight NonText guibg=#060606
+" highlight Folded  guibg=#0A0A0A guifg=#9090D0
 
 " set window widths for fully maximizing windows
 set wmw=0
@@ -82,8 +90,7 @@ set smartcase
 " Always display the status line
 set laststatus=2
 
-"Ever notice a slight lag after typing the leader key + command? This lowers
-"the timeout.
+" Reduce the Leader key lag time
 set timeoutlen=500
 
 "Switch between buffers without saving
@@ -100,12 +107,12 @@ if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
 endif
 
 " move line commands
-nnoremap <C-j> :m+<CR>==
-nnoremap <C-k> :m-2<CR>==
-inoremap <C-j> <Esc>:m+<CR>==gi
-inoremap <C-k> <Esc>:m-2<CR>==gi
-vnoremap <C-j> :m'>+<CR>gv=gv
-vnoremap <C-k> :m-2<CR>gv=gv
+nnoremap <C-Down> :m+<CR>==
+nnoremap <C-Up> :m-2<CR>==
+inoremap <C-Down> <Esc>:m+<CR>==gi
+inoremap <C-Up> <Esc>:m-2<CR>==gi
+vnoremap <C-Down> :m'>+<CR>gv=gv
+vnoremap <C-Up> :m-2<CR>gv=gv
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -113,6 +120,8 @@ if has("autocmd")
 
   " Set File type to 'text' for files ending in .txt
   autocmd BufNewFile,BufRead *.txt setfiletype text
+  " For Haml
+  autocmd BufNewFile,BufRead *.haml setfiletype haml
 
   " Enable soft-wrapping for text files
   autocmd FileType text,markdown,html,xhtml,eruby setlocal wrap linebreak nolist
@@ -147,6 +156,14 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+" Faster and convenient mode switches
+map <space> :
+imap kj <esc>
+imap jj <esc>
+
+" No Help, please
+nmap <F1> <Esc>
+
 " , is the leader character
 let mapleader = ","
 
@@ -160,7 +177,7 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
-nnoremap <silent> <leader>m :ZoomWin<CR>
+
 " Clear the search buffer when hitting return
 function! MapCR()
   nnoremap <cr> :nohlsearch<cr>
@@ -169,6 +186,10 @@ call MapCR()
 
 " Edit the README_FOR_APP (makes :R commands work)
 map <Leader>R :e doc/README_FOR_APP<CR>
+
+" Edit routes
+command! Rroutes :e config/routes.rb
+command! Rschema :e db/schema.rb
 
 " Leader shortcuts for Rails commands
 " map <Leader>m :Rmodel
@@ -187,59 +208,48 @@ map <Leader>R :e doc/README_FOR_APP<CR>
 " map <Leader>su :RSunittest
 " map <Leader>sf :RSfunctionaltest
 
-map <space> :
-imap jj <esc>
+" Save/Quit file
+map <Leader>s :w<cr>
+map <Leader>q :q<cr>
 
+" Comment code
 map <Leader>c \\\
 
-" replace the word under the cursor
+nnoremap <silent> <leader>m :ZoomWin<CR>
+
+" Open/view file in dir of current file
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+map <leader>e :edit %%
+map <leader>te :tabe %%
+map <leader>v :view %%
+
+" Replace Word under the cursor
 :nnoremap <Leader>rw :%s/\<<C-r><C-w>\>//g<Left><Left>
 
-" Hide search highlighting
-map <Leader>h :set invhls <CR>
+" Hide Search highlighting
+map <Leader>hs :set invhls <CR>
 
+" Edit Vimrc file in a new tab
 nmap <leader>ev :tabedit $MYVIMRC<CR>
 
-" Opens an edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>e
-map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+" Strip Whitespace
+nnoremap <leader>sw :%s/\s\+$//<cr>:let @/=''<CR>
 
-" Opens a tab edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>t
-map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
-
-" Inserts the path of the currently edited file into a command
-" Command mode: Ctrl+P
-" cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+""""""""" VISUAL MODE KEYMAPS
 
 " Duplicate a selection
-" Visual mode: D
 vmap D y'>p
 
-" Press Shift+P while in visual mode to replace the selection without
-" overwriting the default register
+" replace the selection without overwriting the default register
 vmap P p :call setreg('"', getreg('0')) <CR>
 
-" For Haml
-au! BufRead,BufNewFile *.haml         setfiletype haml
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" No Help, please
-nmap <F1> <Esc>
-
+" SUSPECT - KEEP THESE????????????
 " Press ^F from insert mode to insert the current file name
 imap <C-F> <C-R>=expand("%")<CR>
-
-" " Maps autocomplete to tab
-" imap <Tab> <C-N>
-
 imap <C-L> <Space>=><Space>
-
 imap <S-CR>    <CR><CR>end<Esc>-cc
-
-
-" Edit routes
-command! Rroutes :e config/routes.rb
-command! Rschema :e db/schema.rb
 
 " Local config
 if filereadable(".vimrc.local")
@@ -251,14 +261,6 @@ if executable("ack")
   set grepprg=ack\ -H\ --nogroup\ --nocolor\ --ignore-dir=tmp\ --ignore-dir=coverage
 endif
 
-" Color scheme
-" colorscheme vividchalk
-" highlight NonText guibg=#060606
-" highlight Folded  guibg=#0A0A0A guifg=#9090D0
-
-" Numbers
-set number
-set numberwidth=5
 
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
@@ -275,24 +277,6 @@ set tags=./tags;
 
 let g:fuf_splitPathMatching=1
 
-" Open URL
-command! -bar -nargs=1 OpenURL :!open <args>
-function! OpenURL()
-  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;:]*')
-  echo s:uri
-  if s:uri != ""
-	  exec "!open \"" . s:uri . "\""
-  else
-	  echo "No URI found in line."
-  endif
-endfunction
-map <Leader>w :call OpenURL()<CR>
-
-set cursorline
-
-" save file
-map <Leader>s :w<cr>
-map <Leader>q :q<cr>
 " copy "
 vmap <C-c> y
 " Paste clipboard contents (ctrl-v)
@@ -302,13 +286,8 @@ vmap <C-x> x
 
 map <C-right> <ESC>:tabnext<CR>
 map <C-left> <ESC>:tabprevious<CR>
-
-" strip trailing whitespace
-" function! StripWhitespace()
-"   exec ':%s/ \+$//gc'
-" endfunction
-" map <leader>sw :call StripWhitespace()<CR>
-nnoremap <leader>sw :%s/\s\+$//<cr>:let @/=''<CR>
+inoremap <expr> <C-j> ((pumvisible())?("\<Down>"):("<C-j>"))
+inoremap <expr> <C-k> ((pumvisible())?("\<Up>"):("<C-k>"))
 
 " disable auto complete popup at the start
 let g:acp_enableAtStartup=0
@@ -346,9 +325,6 @@ endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <s-tab> <c-n>
 
-inoremap <expr> <C-j> ((pumvisible())?("\<Down>"):("<C-j>"))
-inoremap <expr> <C-k> ((pumvisible())?("\<Up>"):("<C-k>"))
-
 let g:ctrlp_clear_cache_on_exit = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -359,9 +335,3 @@ map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" OPEN FILES IN DIRECTORY OF CURRENT FILE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
-map <leader>e :edit %%
-map <leader>v :view %%
