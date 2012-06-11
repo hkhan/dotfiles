@@ -1,8 +1,17 @@
 [global_config]
   title_transmit_bg_color = "#d30102"
   focus = system
-  scrollbar_position=disabled
 [keybindings]
+  toggle_zoom = <Alt>m
+  go_up = <Alt>k
+  switch_to_tab_4 = <Alt>4
+  go_down = <Alt>j
+  switch_to_tab_5 = <Alt>5
+  switch_to_tab_2 = <Alt>2
+  go_right = <Alt>l
+  switch_to_tab_1 = <Alt>1
+  go_left = <Alt>h
+  switch_to_tab_3 = <Alt>3
 [profiles]
   [[default]]
     palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
