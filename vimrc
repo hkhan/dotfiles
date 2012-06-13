@@ -289,6 +289,20 @@ map <C-left> <ESC>:tabprevious<CR>
 inoremap <expr> <C-j> ((pumvisible())?("\<Down>"):("<C-j>"))
 inoremap <expr> <C-k> ((pumvisible())?("\<Up>"):("<C-k>"))
 
+" Tab/Shift+Tab indent/unindent the highlighted block (and maintain the
+" highlight after changing the indentation) in both Visual and Select modes.
+vnoremap <Tab>    >gv
+vnoremap <S-Tab>  <gv
+
+" Make page-forward and page-backward work in insert mode.
+inoremap <C-F>  <C-O><C-F>
+inoremap <C-B>  <C-O><C-B>
+
+" Keep the working line in the center of the window. This is a toggle, so you
+" can bounce between centered-working-line scrolling and normal scrolling by
+" issuing the keystroke again.
+nnoremap <Leader>zz  :let &scrolloff=999-&scrolloff<CR>
+
 " disable auto complete popup at the start
 let g:acp_enableAtStartup=0
 
