@@ -44,8 +44,7 @@ Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'vim-scripts/ZoomWin'
-Bundle 'vim-scripts/LustyJuggler.git'
-" Bundle 'fholgado/minibufexpl.vim.git'
+Bundle 'ervandew/supertab'
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -339,42 +338,10 @@ let g:acp_enableAtStartup=0
 
 let g:stop_autocomplete=0
 
-" function! CleverTab(type)
-"     if a:type=='omni'
-"         if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-"             let g:stop_autocomplete=1
-"             return "\<TAB>"
-"         elseif !pumvisible() && !&omnifunc
-"             return "\<C-X>\<C-O>\<C-P>"
-"         endif
-"     elseif a:type=='keyword' && !pumvisible() && !g:stop_autocomplete
-"         return "\<C-X>\<C-N>\<C-P>"
-"     elseif a:type=='next'
-"         if g:stop_autocomplete
-"             let g:stop_autocomplete=0
-"         endif
-"     endif
-"     return ''
-" endfunction
-
-" inoremap <silent><C-Space> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
-
-" noremap <expr> <C-p> pumvisible() ? '<C-p>' :
-"   \ '<C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-
-
-function! InsertTabWrapper()
-  let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-      return "\<tab>"
-    else
-      return "\<c-p>"
-    endif
-endfunction
-inoremap <tab> <c-r>=InsertTabWrapper()<cr>
-inoremap <s-tab> <c-n>
-
 let g:ctrlp_clear_cache_on_exit = 1
+
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabLongestHighlight = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ARROW KEYS ARE UNACCEPTABLE
