@@ -1,5 +1,21 @@
 " based on http://github.com/jferris/config_files/blob/master/vimrc
 
+" =====================================================================
+" Shortcut documentation
+" =====================================================================
+" kj    - ESC
+" ,s    - Save file
+" ,q    - Quit
+" ,c    - Comment
+" ,m    - Maximise window (toggle)
+" ,e    - Edit in current file path
+" ,v    - View in current file path
+" ,te   - TabEdit in current file path
+" ,hs   - Hide Search highlights
+" ,ev   - Edit Vimrc
+" ,sw   - Strip Whitespace
+" ,zz   - Keep working line in centre (toggle)
+
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
@@ -28,6 +44,8 @@ Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'vim-scripts/ZoomWin'
+Bundle 'vim-scripts/LustyJuggler.git'
+" Bundle 'fholgado/minibufexpl.vim.git'
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -73,6 +91,7 @@ set hlsearch
 set number
 set numberwidth=5
 set cursorline
+set mouse=a
 
 " Color scheme
 " colorscheme vividchalk
@@ -215,6 +234,8 @@ map <Leader>q :q<cr>
 " Comment code
 map <Leader>c \\\
 
+map <Leader>t :TMiniBufExplorer<CR>
+
 nnoremap <silent> <leader>m :ZoomWin<CR>
 
 " Open/view file in dir of current file
@@ -235,7 +256,20 @@ nmap <leader>ev :tabedit $MYVIMRC<CR>
 " Strip Whitespace
 nnoremap <leader>sw :%s/\s\+$//<cr>:let @/=''<CR>
 
+map <leader>b :CtrlPBuffer<CR>
+
+" run tests
+map ; <Plug>RunSpecRun
+
 """"""""" VISUAL MODE KEYMAPS
+
+" Tab/Shift+Tab indent/unindent the highlighted block (and maintain the
+" highlight after changing the indentation) in both Visual and Select modes.
+vnoremap <Tab>    >gv
+vnoremap <S-Tab>  <gv
+
+" Backspace in Visual mode deletes selection.
+vnoremap <BS> d
 
 " Duplicate a selection
 vmap D y'>p
@@ -246,8 +280,6 @@ vmap P p :call setreg('"', getreg('0')) <CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " SUSPECT - KEEP THESE????????????
-" Press ^F from insert mode to insert the current file name
-imap <C-F> <C-R>=expand("%")<CR>
 imap <C-L> <Space>=><Space>
 imap <S-CR>    <CR><CR>end<Esc>-cc
 
@@ -286,13 +318,9 @@ vmap <C-x> x
 
 map <C-right> <ESC>:tabnext<CR>
 map <C-left> <ESC>:tabprevious<CR>
+
 inoremap <expr> <C-j> ((pumvisible())?("\<Down>"):("<C-j>"))
 inoremap <expr> <C-k> ((pumvisible())?("\<Up>"):("<C-k>"))
-
-" Tab/Shift+Tab indent/unindent the highlighted block (and maintain the
-" highlight after changing the indentation) in both Visual and Select modes.
-vnoremap <Tab>    >gv
-vnoremap <S-Tab>  <gv
 
 " Make page-forward and page-backward work in insert mode.
 inoremap <C-F>  <C-O><C-F>
@@ -302,6 +330,9 @@ inoremap <C-B>  <C-O><C-B>
 " can bounce between centered-working-line scrolling and normal scrolling by
 " issuing the keystroke again.
 nnoremap <Leader>zz  :let &scrolloff=999-&scrolloff<CR>
+
+" select just pasted text
+nnoremap gp `[v`]
 
 " disable auto complete popup at the start
 let g:acp_enableAtStartup=0
@@ -327,6 +358,10 @@ let g:stop_autocomplete=0
 " endfunction
 
 " inoremap <silent><C-Space> <C-R>=CleverTab('omni')<CR><C-R>=CleverTab('keyword')<CR><C-R>=CleverTab('next')<CR>
+
+" noremap <expr> <C-p> pumvisible() ? '<C-p>' :
+"   \ '<C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
 
 function! InsertTabWrapper()
   let col = col('.') - 1
